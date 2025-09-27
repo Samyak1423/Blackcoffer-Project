@@ -1,51 +1,69 @@
-// frontend/src/App.jsx
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 import Filters from './components/Filters';
-import ChartsContainer from './components/ChartsContainer'; // Import the new container
+import ChartsContainer from './components/ChartsContainer';
 
 function App() {
   const [selectedFilters, setSelectedFilters] = useState({});
   const [chartData, setChartData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleFilterChange = (filterName, value) => {
-    setSelectedFilters(prevFilters => ({
-      ...prevFilters,
-      [filterName]: value
-    }));
-  };
-   const resetFilters = () => {
-        setSelectedFilters({});
-        // You might need to reset the dropdowns in Filters.jsx visually
-        // For simplicity, this clears the data query
-    };
+  // This will hold the original full list of data
+  const [fullData, setFullData] = useState([]);
 
+  // Fetch all data just once on initial load
   useEffect(() => {
-    // Build a query string, making sure to ignore empty filter values
-    const queryParams = Object.keys(selectedFilters)
-      .filter(key => selectedFilters[key])
-      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(selectedFilters[key])}`)
-      .join('&');
-      
-    axios.get(`http://localhost:5000/api/data?${queryParams}`)
+    axios.get(`http://localhost:5000/api/data`)
       .then(response => {
-        setChartData(response.data);
+        setFullData(response.data);
+        setChartData(response.data); // Initially show all data
+        setIsLoading(false);
       })
       .catch(error => {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching initial data:', error);
+        setIsLoading(false);
       });
-  }, [selectedFilters]);
+  }, []);
+
+  const handleFilterChange = (filterName, value) => {
+    const newFilters = {
+      ...selectedFilters,
+      [filterName]: value
+    };
+    setSelectedFilters(newFilters);
+    applyFilters(newFilters);
+  };
+
+  const applyFilters = (filters) => {
+    let filteredData = [...fullData];
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value) { // Only filter if a value is selected
+        filteredData = filteredData.filter(item => String(item[key]) === String(value));
+      }
+    });
+    setChartData(filteredData);
+  };
+  
+  const resetFilters = () => {
+    setSelectedFilters({});
+    setChartData(fullData); // Reset to show all data
+    // This is a simple way to reset the dropdowns visually
+    const selects = document.querySelectorAll('.filters-sidebar select');
+    selects.forEach(select => select.value = '');
+  };
 
   return (
     <div className="app">
-      <Filters onFilterChange={handleFilterChange} onReset={resetFilters} />
-      <main className="charts-container">
-      <h1><span className="gradient-text">Data Visualization Dashboard</span></h1>
-        {/* Replace the placeholder text with the ChartsContainer component */}
-        <ChartsContainer chartData={chartData} />
-      </main>
+      <Filters onFilterChange={handleFilterChange} onResetFilters={resetFilters} />
+      <div className="main-content">
+        <header className="header">
+          <h1>Analytics Dashboard</h1>
+        </header>
+        <main className="charts-container">
+          {isLoading ? <p>Loading Dashboard...</p> : <ChartsContainer chartData={chartData} />}
+        </main>
+      </div>
     </div>
   );
 }

@@ -90,6 +90,14 @@ const Filters = ({ onFilterChange, onResetFilters }) => {
         </select>
       </div>
 
+      <div className="filter-group">
+        <label htmlFor="start_year">Start Year</label>
+        <select id="start_year" name="start_year" onChange={handleChange}>
+          <option value="">-- All --</option>
+          {filterOptions.startYears.map(item => <option key={item} value={item}>{item}</option>)}
+        </select>
+      </div>
+
     </aside>
   );
 };

@@ -38,6 +38,7 @@ async function run() {
                 const countries = await insightsCollection.distinct('country');
                 const cities = await insightsCollection.distinct('city');
                 const endYears = await insightsCollection.distinct('end_year');
+                const startYears = await insightsCollection.distinct('start_year');
                 
                 res.json({
                     topics: topics.filter(item => item).sort(),
@@ -47,7 +48,9 @@ async function run() {
                     sources: sources.filter(item => item).sort(),
                     countries: countries.filter(item => item).sort(),
                     cities: cities.filter(item => item).sort(),
-                    endYears: endYears.filter(item => item).sort((a, b) => b - a)
+                    endYears: endYears.filter(item => item).sort((a, b) => b - a),
+                    startYears: startYears.filter(item => item).sort((a, b) => b - a)
+
                 });
             } catch (error) {
                 res.status(500).send({ message: 'Error fetching filter options', error });

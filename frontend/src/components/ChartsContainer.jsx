@@ -9,6 +9,7 @@ import CountryChart from './CountryChart';
 import CityChart from './CityChart';
 import KpiCard from './KpiCard'; // Make sure this is imported
 import MapChart from './MapChart';
+import YearTrendChart from './YearTrendChart';
 
 const ChartsContainer = ({ chartData }) => {
   if (!chartData || chartData.length === 0) {
@@ -61,6 +62,9 @@ const ChartsContainer = ({ chartData }) => {
         {/* --- Row 4 (Full Width) --- */}
         <div className="chart-card" style={{ ...chartCardStyle, gridColumn: '1 / -1' }}>
           <RelevanceChart chartData={chartData} />
+        </div>
+        <div className="chart-card" style={{ height: 'auto', gridColumn: '1 / -1' }}>
+          <YearTrendChart chartData={chartData} />
         </div>
         <div className="chart-card" style={{ height: 'auto', gridColumn: '1 / -1' }}>
     <MapChart chartData={chartData} />
