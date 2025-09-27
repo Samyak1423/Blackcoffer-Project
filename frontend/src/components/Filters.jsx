@@ -48,6 +48,7 @@ const Filters = ({ onFilterChange, onResetFilters }) => {
           {filterOptions.sectors.map(item => <option key={item} value={item}>{item}</option>)}
         </select>
       </div>
+      
 
       <div className="filter-group">
         <label htmlFor="region">Region</label>
@@ -78,6 +79,14 @@ const Filters = ({ onFilterChange, onResetFilters }) => {
         <select id="country" name="country" onChange={handleChange}>
           <option value="">-- All --</option>
           {filterOptions.countries.map(item => <option key={item} value={item}>{item}</option>)}
+        </select>
+      </div>
+
+      <div className="filter-group">
+        <label htmlFor="end_year">End Year</label>
+        <select id="end_year" name="end_year" onChange={handleChange}>
+          <option value="">-- All --</option>
+          {filterOptions.endYears.map(item => <option key={item} value={item}>{item}</option>)}
         </select>
       </div>
 

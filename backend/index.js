@@ -36,6 +36,8 @@ async function run() {
                 const pests = await insightsCollection.distinct('pestle');
                 const sources = await insightsCollection.distinct('source');
                 const countries = await insightsCollection.distinct('country');
+                const cities = await insightsCollection.distinct('city');
+                const endYears = await insightsCollection.distinct('end_year');
                 
                 res.json({
                     topics: topics.filter(item => item).sort(),
@@ -44,6 +46,8 @@ async function run() {
                     pests: pests.filter(item => item).sort(),
                     sources: sources.filter(item => item).sort(),
                     countries: countries.filter(item => item).sort(),
+                    cities: cities.filter(item => item).sort(),
+                    endYears: endYears.filter(item => item).sort((a, b) => b - a)
                 });
             } catch (error) {
                 res.status(500).send({ message: 'Error fetching filter options', error });
@@ -63,6 +67,7 @@ async function run() {
                 if (req.query.pestle) query.pestle = req.query.pestle;
                 if (req.query.source) query.source = req.query.source;
                 if (req.query.country) query.country = req.query.country;
+                if (req.query.city) query.city = req.query.city;
                 if (req.query.end_year) query.end_year = parseInt(req.query.end_year);
                 
                 const data = await insightsCollection.find(query).toArray();
