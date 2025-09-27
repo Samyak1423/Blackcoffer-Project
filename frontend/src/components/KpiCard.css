@@ -1,0 +1,24 @@
+/* frontend/src/components/KpiCard.css */
+.kpi-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border: 1px solid #e2e8f0;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+  }
+  .kpi-icon {
+    font-size: 2.5rem;
+    margin-right: 20px;
+    color: #1C352D;
+  }
+  .kpi-content .kpi-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1C352D;
+  }
+  .kpi-content .kpi-title {
+    font-size: 1rem;
+    color: #A6B28F;
+  }
